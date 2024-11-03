@@ -65,6 +65,16 @@ const searchBooks = (filters) => {
     });
 };
 
+
+const updateShowMoreButton = () => {
+    const remaining = matches.length - (page * BOOKS_PER_PAGE);
+    DOMElements.listButton.innerHTML = `
+        <span>Show more</span>
+        <span class="list__remaining"> (${remaining > 0 ? remaining : 0})</span>
+    `;
+    DOMElements.listButton.disabled = remaining < 1;
+};
+
 const starting = document.createDocumentFragment()
 
 for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
