@@ -45,6 +45,16 @@ const renderBooks = (booksToRender) => {
     });
     DOMElements.listItems.appendChild(fragment);
 };
+const setupGenresAndAuthors = (type, data) => {
+    const fragment = document.createDocumentFragment();
+    const firstElement = createElement('option', '', { value: 'any' }, All ${type});
+    fragment.appendChild(firstElement);
+    Object.entries(data).forEach(([id, name]) => {
+        const option = createElement('option', '', { value: id }, name);
+        fragment.appendChild(option);
+    });
+    document.querySelector([data-search-${type}]).appendChild(fragment);
+};
 
 const starting = document.createDocumentFragment()
 
