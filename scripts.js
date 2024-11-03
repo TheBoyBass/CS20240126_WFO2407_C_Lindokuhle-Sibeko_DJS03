@@ -22,6 +22,14 @@ const DOMElements = {
     listSubtitle: document.querySelector('[data-list-subtitle]'),
     listDescription: document.querySelector('[data-list-description]'),
 };
+//function that simplifies the process of creating Dom elements
+const createElement = (tag, className, attributes = {}, innerHTML = '') => {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+    element.innerHTML = innerHTML;
+    return element;
+};
 
 const starting = document.createDocumentFragment()
 
