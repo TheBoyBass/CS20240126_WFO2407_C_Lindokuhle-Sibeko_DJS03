@@ -56,6 +56,15 @@ const setupGenresAndAuthors = (type, data) => {
     document.querySelector([data-search-${type}]).appendChild(fragment);
 };
 
+const searchBooks = (filters) => {
+    return books.filter(book => {
+        const genreMatch = filters.genre === 'any' || book.genres.includes(filters.genre);
+        const titleMatch = filters.title.trim() === '' || book.title.toLowerCase().includes(filters.title.toLowerCase());
+        const authorMatch = filters.author === 'any' || book.author === filters.author;
+        return titleMatch && authorMatch && genreMatch;
+    });
+};
+
 const starting = document.createDocumentFragment()
 
 for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
