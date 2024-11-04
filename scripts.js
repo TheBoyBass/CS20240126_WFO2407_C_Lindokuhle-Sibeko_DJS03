@@ -107,6 +107,17 @@ DOMElements.searchForm.addEventListener('submit', (event) => {
 });
 
 
+// Initial setup
+const init = () => {
+    renderBooks(matches.slice(0, BOOKS_PER_PAGE));
+    setupGenresAndAuthors('genres', genres);
+    setupGenresAndAuthors('authors', authors);
+    applyTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day');
+    updateShowMoreButton();
+};
+
+
+
 
 const starting = document.createDocumentFragment()
 
