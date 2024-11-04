@@ -22,6 +22,7 @@ const DOMElements = {
     listSubtitle: document.querySelector('[data-list-subtitle]'),
     listDescription: document.querySelector('[data-list-description]'),
 };
+
 //function that simplifies the process of creating Dom elements
 const createElement = (tag, className, attributes = {}, innerHTML = '') => {
     const element = document.createElement(tag);
@@ -116,8 +117,7 @@ const init = () => {
     updateShowMoreButton();
 };
 
-
-
+init();
 
 const starting = document.createDocumentFragment()
 
