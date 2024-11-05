@@ -124,12 +124,10 @@ const GenreOptions = () => {
 
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.querySelector('[data-settings-theme]').value = 'night'
-        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
-        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
+        applyTheme('night')
     } else {
         document.querySelector('[data-settings-theme]').value = 'day'
-        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
-        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+        applyTheme('day')
     }
 
     document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
