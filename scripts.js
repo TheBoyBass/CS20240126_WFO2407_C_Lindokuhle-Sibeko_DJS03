@@ -87,9 +87,63 @@ const applyTheme = (theme) => {
     }
 };
 
+const GenreOptions = () => {
+    const starting = document.createDocumentFragment()
+
+    document.querySelector('[data-list-items]').appendChild(starting)
+
+    const genreHtml = document.createDocumentFragment()
+    const firstGenreElement = document.createElement('option')
+    firstGenreElement.value = 'any'
+    firstGenreElement.innerText = 'All Genres'
+    genreHtml.appendChild(firstGenreElement)
+
+    for (const [id, name] of Object.entries(genres)) {
+        const element = document.createElement('option')
+        element.value = id
+        element.innerText = name
+        genreHtml.appendChild(element)
+    }
+
+    document.querySelector('[data-search-genres]').appendChild(genreHtml)
+
+    const authorsHtml = document.createDocumentFragment()
+    const firstAuthorElement = document.createElement('option')
+    firstAuthorElement.value = 'any'
+    firstAuthorElement.innerText = 'All Authors'
+    authorsHtml.appendChild(firstAuthorElement)
+
+    for (const [id, name] of Object.entries(authors)) {
+        const element = document.createElement('option')
+        element.value = id
+        element.innerText = name
+        authorsHtml.appendChild(element)
+    }
+
+    document.querySelector('[data-search-authors]').appendChild(authorsHtml)
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector('[data-settings-theme]').value = 'night'
+        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
+        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
+    } else {
+        document.querySelector('[data-settings-theme]').value = 'day'
+        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
+        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
+    }
+
+    document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
+    document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) > 0
+
+    document.querySelector('[data-list-button]').innerHTML = `
+        <span>Show more</span>
+        <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
+    `
+    }
 
 // Initial setup
 const init = () => {
+    GenreOptions()
     renderBooks(matches.slice(0, BOOKS_PER_PAGE));
     setupGenresAndAuthors('genres', genres);
     setupGenresAndAuthors('authors', authors);
@@ -98,58 +152,6 @@ const init = () => {
 };
 
 init();
-
-const starting = document.createDocumentFragment()
-
-document.querySelector('[data-list-items]').appendChild(starting)
-
-const genreHtml = document.createDocumentFragment()
-const firstGenreElement = document.createElement('option')
-firstGenreElement.value = 'any'
-firstGenreElement.innerText = 'All Genres'
-genreHtml.appendChild(firstGenreElement)
-
-for (const [id, name] of Object.entries(genres)) {
-    const element = document.createElement('option')
-    element.value = id
-    element.innerText = name
-    genreHtml.appendChild(element)
-}
-
-document.querySelector('[data-search-genres]').appendChild(genreHtml)
-
-const authorsHtml = document.createDocumentFragment()
-const firstAuthorElement = document.createElement('option')
-firstAuthorElement.value = 'any'
-firstAuthorElement.innerText = 'All Authors'
-authorsHtml.appendChild(firstAuthorElement)
-
-for (const [id, name] of Object.entries(authors)) {
-    const element = document.createElement('option')
-    element.value = id
-    element.innerText = name
-    authorsHtml.appendChild(element)
-}
-
-document.querySelector('[data-search-authors]').appendChild(authorsHtml)
-
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.querySelector('[data-settings-theme]').value = 'night'
-    document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
-    document.documentElement.style.setProperty('--color-light', '10, 10, 20');
-} else {
-    document.querySelector('[data-settings-theme]').value = 'day'
-    document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
-    document.documentElement.style.setProperty('--color-light', '255, 255, 255');
-}
-
-document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
-document.querySelector('[data-list-button]').disabled = (matches.length - (page * BOOKS_PER_PAGE)) > 0
-
-document.querySelector('[data-list-button]').innerHTML = `
-    <span>Show more</span>
-    <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
-`
 
 // Event Listeners
 DOMElements.listButton.addEventListener('click', () => {
@@ -197,14 +199,7 @@ document.querySelector('[data-settings-form]').addEventListener('submit', (event
     event.preventDefault()
     const formData = new FormData(event.target)
     const { theme } = Object.fromEntries(formData)
-
-    if (theme === 'night') {
-        document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
-        document.documentElement.style.setProperty('--color-light', '10, 10, 20');
-    } else {
-        document.documentElement.style.setProperty('--color-dark', '10, 10, 20');
-        document.documentElement.style.setProperty('--color-light', '255, 255, 255');
-    }
+    applyTheme(theme);
     
     document.querySelector('[data-settings-overlay]').open = false
 })
