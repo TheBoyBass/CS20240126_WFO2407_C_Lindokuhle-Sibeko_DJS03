@@ -86,27 +86,6 @@ const applyTheme = (theme) => {
     }
 };
 
-// Event Listeners
-DOMElements.listButton.addEventListener('click', () => {
-    renderBooks(matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE));
-    page += 1;
-    updateShowMoreButton();
-});
-
-DOMElements.searchForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const filters = {
-        title: DOMElements.searchTitle.value,
-        author: DOMElements.searchForm.elements.author.value,
-        genre: DOMElements.searchForm.elements.genre.value,
-    };
-    matches = searchBooks(filters);
-    page = 1;
-    DOMElements.listItems.innerHTML = '';
-    renderBooks(matches.slice(0, BOOKS_PER_PAGE));
-    updateShowMoreButton();
-});
-
 
 // Initial setup
 const init = () => {
@@ -190,6 +169,27 @@ document.querySelector('[data-list-button]').innerHTML = `
     <span>Show more</span>
     <span class="list__remaining"> (${(matches.length - (page * BOOKS_PER_PAGE)) > 0 ? (matches.length - (page * BOOKS_PER_PAGE)) : 0})</span>
 `
+
+// Event Listeners
+DOMElements.listButton.addEventListener('click', () => {
+    renderBooks(matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE));
+    page += 1;
+    updateShowMoreButton();
+});
+
+DOMElements.searchForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const filters = {
+        title: DOMElements.searchTitle.value,
+        author: DOMElements.searchForm.elements.author.value,
+        genre: DOMElements.searchForm.elements.genre.value,
+    };
+    matches = searchBooks(filters);
+    page = 1;
+    DOMElements.listItems.innerHTML = '';
+    renderBooks(matches.slice(0, BOOKS_PER_PAGE));
+    updateShowMoreButton();
+});
 
 document.querySelector('[data-search-cancel]').addEventListener('click', () => {
     document.querySelector('[data-search-overlay]').open = false
