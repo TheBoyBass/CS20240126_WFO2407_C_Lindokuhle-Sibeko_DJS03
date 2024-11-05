@@ -23,13 +23,24 @@ const DOMElements = {
     listDescription: document.querySelector('[data-list-description]'),
 };
 
-//function that simplifies the process of creating Dom elements
+//function that Creates DOM Elements
 const createElement = (tag, className, attributes = {}, innerHTML = '') => {
     const element = document.createElement(tag);
     if (className) element.className = className;
     Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
     element.innerHTML = innerHTML;
     return element;
+};
+
+// Create Book Preview Button
+const createBookPreviewButton = ({ author, id, image, title }) => {
+    return createElement('button', 'preview', { 'data-preview': id }, `
+        <img class="preview__image" src="${image}" />
+        <div class="preview__info">
+            <h3 class="preview__title">${title}</h3>
+            <div class="preview__author">${authors[author]}</div>
+        </div>
+    `);
 };
 
 // 
