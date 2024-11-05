@@ -56,21 +56,6 @@ const setupGenresAndAuthors = (type, data) => {
     });
     document.querySelector(`[data-search-${type}]`).appendChild(fragment);
 };
-function createBookPreviewButton({ author, id, image, title }, authors) {
-    const element = document.createElement('button');
-    element.classList.add('preview');
-    element.setAttribute('data-preview', id);
-
-    element.innerHTML = `
-        <img class="preview__image" src="${image}" />
-        <div class="preview__info">
-            <h3 class="preview__title">${title}</h3>
-            <div class="preview__author">${authors[author]}</div>
-        </div>
-    `;
-
-    return element;
-}
 
 const searchBooks = (filters) => {
     return books.filter(book => {
@@ -125,12 +110,6 @@ DOMElements.searchForm.addEventListener('submit', (event) => {
 
 // Initial setup
 const init = () => {
-    const starting = document.createDocumentFragment();
-
-    for (const book of matches.slice(0, BOOKS_PER_PAGE)) {
-        const button = createBookPreviewButton(book, authors);
-        starting.appendChild(button);
-}
     renderBooks(matches.slice(0, BOOKS_PER_PAGE));
     setupGenresAndAuthors('genres', genres);
     setupGenresAndAuthors('authors', authors);
@@ -140,27 +119,27 @@ const init = () => {
 
 init();
 
-// const starting = document.createDocumentFragment()
+const starting = document.createDocumentFragment()
 
-// for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-//     const element = document.createElement('button')
-//     element.classList = 'preview'
-//     element.setAttribute('data-preview', id)
+for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
+    const element = document.createElement('button')
+    element.classList = 'preview'
+    element.setAttribute('data-preview', id)
 
-//     element.innerHTML = `
-//         <img
-//             class="preview__image"
-//             src="${image}"
-//         />
+    element.innerHTML = `
+        <img
+            class="preview__image"
+            src="${image}"
+        />
         
-//         <div class="preview__info">
-//             <h3 class="preview__title">${title}</h3>
-//             <div class="preview__author">${authors[author]}</div>
-//         </div>
-//     `
+        <div class="preview__info">
+            <h3 class="preview__title">${title}</h3>
+            <div class="preview__author">${authors[author]}</div>
+        </div>
+    `
 
-//     starting.appendChild(element)
-// }
+    starting.appendChild(element)
+}
 
 document.querySelector('[data-list-items]').appendChild(starting)
 
