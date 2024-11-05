@@ -32,7 +32,7 @@ const createElement = (tag, className, attributes = {}, innerHTML = '') => {
     return element;
 };
 
-// Create Book Preview Button
+// Create Book Preview Button Function
 const createBookPreviewButton = ({ author, id, image, title }) => {
     return createElement('button', 'preview', { 'data-preview': id }, `
         <img class="preview__image" src="${image}" />
@@ -43,21 +43,16 @@ const createBookPreviewButton = ({ author, id, image, title }) => {
     `);
 };
 
-// 
+//Render Books Function
 const renderBooks = (booksToRender) => {
     const fragment = document.createDocumentFragment();
-    booksToRender.forEach(({ author, id, image, title }) => {
-        const button = createElement('button', 'preview', { 'data-preview': id }, `
-            <img class="preview__image" src="${image}" />
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `);
-        fragment.appendChild(button);
+    booksToRender.forEach(book => {
+        fragment.appendChild(createBookPreviewButton(book));
     });
     DOMElements.listItems.appendChild(fragment);
 };
+
+// GEnere and Author Setup Function
 const setupGenresAndAuthors = (type, data) => {
     const fragment = document.createDocumentFragment();
     const firstElement = createElement('option', '', { value: 'any' }, `All ${type.charAt(0).toUpperCase() + type.slice(1)}`);
@@ -69,6 +64,19 @@ const setupGenresAndAuthors = (type, data) => {
     document.querySelector(`[data-search-${type}]`).appendChild(fragment);
 };
 
+// Create Options for Select Elements
+const createOptions = (data, type) => {
+    const fragment = document.createDocumentFragment();
+    const firstElement = createElement('option', '', { value: 'any' }, `All ${type.charAt(0).toUpperCase() + type.slice(1)}`);
+    fragment.appendChild(firstElement);
+    Object.entries(data).forEach(([id, name]) => {
+        const option = createElement('option', '', { value: id }, name);
+        fragment.appendChild(option);
+    });
+    return fragment;
+};
+
+// Search Books Function
 const searchBooks = (filters) => {
     return books.filter(book => {
         const genreMatch = filters.genre === 'any' || book.genres.includes(filters.genre);
@@ -78,7 +86,7 @@ const searchBooks = (filters) => {
     });
 };
 
-
+// Update Show More Button Function
 const updateShowMoreButton = () => {
     const remaining = matches.length - (page * BOOKS_PER_PAGE);
     DOMElements.listButton.innerHTML = `
@@ -87,7 +95,7 @@ const updateShowMoreButton = () => {
     `;
     DOMElements.listButton.disabled = remaining < 1;
 };
-
+//Apply Theme Settings Function
 const applyTheme = (theme) => {
     if (theme === 'night') {
         document.documentElement.style.setProperty('--color-dark', '255, 255, 255');
